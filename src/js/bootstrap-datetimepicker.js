@@ -1079,9 +1079,13 @@ THE SOFTWARE.
                     ret += '<ul class="list-unstyled">' +
                         '<li' + (picker.options.collapse ? ' class="collapse in"' : '') + '>' +
                             '<div class="datepicker">' + template + '</div>' +
-                        '</li>' +
-                        '<li class="picker-switch accordion-toggle"><a class="btn" style="width:100%"><span class="' + picker.options.icons.time + '"></span></a></li>' +
-                        '<li' + (picker.options.collapse ? ' class="collapse"' : '') + '>' +
+                        '</li>';
+                    // hide the time divider - it's not needed.
+                    if (picker.options.collapse) {
+                        ret += '<li class="picker-switch accordion-toggle"><a class="btn" style="width:100%"><span class="' + picker.options.icons.time + '"></span></a></li>';
+                    }
+
+                    ret += '<li' + (picker.options.collapse ? ' class="collapse"' : '') + '>' +
                             '<div class="timepicker">' + tpGlobal.getTemplate() + '</div>' +
                         '</li>' +
                    '</ul>';
