@@ -85,6 +85,8 @@ THE SOFTWARE.
             picker.unset = false;
             picker.isInput = picker.element.is('input');
             picker.component = false;
+            picker.options.formatDay = picker.options.formatDay || 'EE';
+
 
             if (picker.element.hasClass('input-group')) {
                 if (picker.element.find('.datepickerbutton').size() === 0) {//in case there is more then one 'input-group-addon' Issue #48
@@ -220,6 +222,7 @@ THE SOFTWARE.
             else {
                 eData = picker.element.find('input').data();
             }
+            console.log(eData);
             if (eData.dateFormat !== undefined) {
                 picker.options.format = eData.dateFormat;
             }
@@ -283,6 +286,7 @@ THE SOFTWARE.
             if (eData.dateDaysofweekdisabled !== undefined) {
                 picker.options.daysOfWeekDisabled = eData.dateDaysofweekdisabled;
             }
+            if (eData.formatDay !== undefined) { picker.options.formatDay = eData.dateFormatDay; }
         },
 
         place = function () {
@@ -399,20 +403,29 @@ THE SOFTWARE.
 
         fillDow = function () {
             moment.locale(picker.options.language);
-            var html = $('<tr>'), weekdaysMin = moment.weekdaysMin(), i;
+            var html = $('<tr>'), weekdays = moment.weekdaysShort(), i;
             if (picker.options.calendarWeeks === true) {
                 html.append('<th class="cw">#</th>');
             }
+
+            if (picker.options.formatDay === 'EE' ) {
+                // just two letters
+                weekdays = moment.weekdaysMin()
+            } else if (picker.options.formatDay === 'E') {
+                // single letter.
+                weekdays = moment.weekdaysMin().map(function(w) { return w.substring(0,1); });
+            }
+
             if (moment().localeData()._week.dow === 0) { // starts on Sunday
                 for (i = 0; i < 7; i++) {
-                    html.append('<th class="dow">' + weekdaysMin[i] + '</th>');
+                    html.append('<th class="dow">' + weekdays[i] + '</th>');
                 }
             } else {
                 for (i = 1; i < 8; i++) {
                     if (i === 7) {
-                        html.append('<th class="dow">' + weekdaysMin[0] + '</th>');
+                        html.append('<th class="dow">' + weekdays[0] + '</th>');
                     } else {
-                        html.append('<th class="dow">' + weekdaysMin[i] + '</th>');
+                        html.append('<th class="dow">' + weekdays[i] + '</th>');
                     }
                 }
             }
